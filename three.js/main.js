@@ -1,6 +1,6 @@
-import './style.css'
+// Find the latest version by visiting https://cdn.skypack.dev/three.
 
-document.querySelector('#app').innerHTML = `
-  <h1>Hello Vite!</h1>
-  <a href="https://vitejs.dev/guide/features.html" target="_blank">Documentation</a>
-`
+import * as THREE from "https://cdn.skypack.dev/three@0.126.1";
+
+const scene = new THREE.Scene();
+console.log(scene);
