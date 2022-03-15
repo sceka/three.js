@@ -2,13 +2,14 @@
 
 import * as THREE from "https://cdn.skypack.dev/three@0.126.1";
 import * as dat from "dat.gui";
+import { OrbitControls } from "https://unpkg.com/three@0.126.1/examples/jsm/controls/OrbitControls.js";
 const gui = new dat.GUI();
 const world = {
   plane: {
-    width: 10,
-    height: 10,
-    widthSegments: 10,
-    heightSegments: 10,
+    width: 19,
+    height: 19,
+    widthSegments: 17,
+    heightSegments: 17,
   },
 };
 gui.add(world.plane, "width", 1, 20).onChange(generatePlane);
@@ -45,10 +46,12 @@ const camera = new THREE.PerspectiveCamera(
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(devicePixelRatio);
+
 document.body.appendChild(renderer.domElement);
+new OrbitControls(camera, renderer.domElement);
 camera.position.z = 5;
 
-const planeGeometry = new THREE.PlaneGeometry(5, 5, 10, 10);
+const planeGeometry = new THREE.PlaneGeometry(19, 19, 17, 17);
 const planeMaterial = new THREE.MeshPhongMaterial({
   color: 0xff0000,
   side: THREE.DoubleSide,
@@ -59,7 +62,20 @@ scene.add(planeMesh);
 const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(0, 0, 1);
 scene.add(light);
+const backlight = new THREE.DirectionalLight(0xffffff, 1);
+backlight.position.set(0, 0, -1);
+scene.add(backlight);
 
+const mouse = {
+  x: undefined,
+  y: undefined,
+};
+
+addEventListener("mousemove", (event) => {
+  mouse.x = (event.clientX / innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / innerHeight) * 2 + 1;
+  console.log(mouse);
+});
 function animate() {
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
